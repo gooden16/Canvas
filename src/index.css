@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-canvas-navy text-canvas-cream font-montserrat;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-playfair text-canvas-cream font-normal;
+  }
+  
+  h1 {
+    @apply text-3xl md:text-4xl font-bold;
+  }
+  
+  h2 {
+    @apply text-2xl md:text-3xl font-bold;
+  }
+  
+  h3 {
+    @apply text-xl md:text-2xl;
+  }
+  
+  h4 {
+    @apply text-lg md:text-xl;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 h-11 bg-canvas-gold text-canvas-navy font-semibold rounded-md transition-all hover:bg-opacity-90 active:bg-opacity-100 disabled:opacity-50 disabled:hover:bg-opacity-100;
+  }
+  
+  .btn-secondary {
+    @apply px-4 h-11 bg-canvas-cream text-canvas-navy font-semibold rounded-md transition-all hover:bg-opacity-90 active:bg-opacity-100 disabled:opacity-50 disabled:hover:bg-opacity-100;
+  }
+  
+  .btn-tertiary {
+    @apply px-4 h-11 bg-transparent text-canvas-cream border border-canvas-cream font-semibold rounded-md transition-all hover:bg-canvas-cream hover:bg-opacity-10 active:bg-opacity-20 disabled:opacity-50 disabled:hover:bg-opacity-0;
+  }
+  
+  .card {
+    @apply bg-canvas-lightgray text-canvas-navy rounded-lg border border-canvas-mediumgray p-4 transition-all hover:shadow-md;
+  }
+  
+  .input-field {
+    @apply h-11 px-3 rounded-md border border-canvas-mediumgray bg-white text-canvas-navy focus:outline-none focus:ring-2 focus:ring-canvas-gold;
+  }
+  
+  .slider-track {
+    @apply h-1 bg-canvas-mediumgray rounded-full;
+  }
+  
+  .slider-track-active {
+    @apply h-1 bg-canvas-olive rounded-full;
+  }
+  
+  .slider-handle {
+    @apply w-5 h-5 bg-canvas-gold rounded-full border-2 border-white cursor-pointer;
+  }
+  
+  .toggle-switch {
+    @apply relative inline-flex w-9 h-5 rounded-full transition-colors;
+  }
+  
+  .toggle-switch-handle {
+    @apply absolute w-4 h-4 rounded-full bg-white transition-transform transform top-0.5 left-0.5;
+  }
+  
+  .canvas-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
