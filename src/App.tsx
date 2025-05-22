@@ -1,22 +1,19 @@
-import React, { useState } from 'react';
-import { WelcomePage } from './pages/WelcomePage';
-import { CanvasCreator } from './pages/CanvasCreator';
+import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
+import { Layout } from '@/components/layout/layout';
+import { PartnerPortalProvider } from '@/context/partner-portal-context';
+import { AppRoutes } from '@/routes';
 
 function App() {
-  const [showCanvasCreator, setShowCanvasCreator] = useState(false);
-  
-  const handleStartCanvas = () => {
-    setShowCanvasCreator(true);
-  };
-
   return (
-    <div>
-      {showCanvasCreator ? (
-        <CanvasCreator />
-      ) : (
-        <WelcomePage onStartCanvas={handleStartCanvas} />
-      )}
-    </div>
+    <ThemeProvider defaultTheme="light">
+      <PartnerPortalProvider>
+        <Layout>
+          <AppRoutes />
+        </Layout>
+        <Toaster />
+      </PartnerPortalProvider>
+    </ThemeProvider>
   );
 }
 
