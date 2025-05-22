@@ -1,11 +1,12 @@
 import React from 'react';
-import { BuildingBlockType, CanvasState, MetricBlock, AssetBlock, LiabilityBlock, CollateralBlock, MoneyMovementBlock, BusinessLogicBlock } from '../../types/canvas';
+import { BuildingBlockType, CanvasState, MetricBlock, AssetBlock, LiabilityBlock, CollateralBlock, MoneyMovementBlock, BusinessLogicBlock, UserBlock } from '../../types/canvas';
 import { MetricBlockConfig } from './MetricBlock';
 import { AssetBlockConfig } from './AssetBlock';
 import { LiabilityBlockConfig } from './LiabilityBlock';
 import { CollateralBlockConfig } from './CollateralBlock';
 import { MoneyMovementBlockConfig } from './MoneyMovementBlock';
 import { BusinessLogicBlockConfig } from './BusinessLogicBlock';
+import { UserAccessBlockConfig } from './UserAccessBlock';
 import { CanvasSummary } from './CanvasSummary';
 
 interface CanvasContentProps {
@@ -49,6 +50,16 @@ export const CanvasContent: React.FC<CanvasContentProps> = ({
 
   const handleUpdateBusinessLogic = (businessLogic: BusinessLogicBlock) => {
     onUpdateCanvas({ businessLogic });
+  };
+
+  const handleAddUser = (user: UserBlock) => {
+    const updatedUsers = [...(canvasState.users || []), user];
+    onUpdateCanvas({ users: updatedUsers });
+  };
+
+  const handleRemoveUser = (userId: string) => {
+    const updatedUsers = canvasState.users.filter(user => user.id !== userId);
+    onUpdateCanvas({ users: updatedUsers });
   };
   
   const renderStepContent = () => {
@@ -94,6 +105,15 @@ export const CanvasContent: React.FC<CanvasContentProps> = ({
           <BusinessLogicBlockConfig
             canvasState={canvasState}
             onUpdateBusinessLogic={handleUpdateBusinessLogic}
+          />
+        );
+      case 'user':
+        return (
+          <UserAccessBlockConfig
+            users={canvasState.users || []}
+            canvasState={canvasState}
+            onAddUser={handleAddUser}
+            onRemoveUser={handleRemoveUser}
           />
         );
       default:

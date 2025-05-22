@@ -72,6 +72,7 @@ const initialCanvasState: CanvasState = {
   metrics: [],
   assets: [],
   liabilities: [],
+  users: [],
 };
 
 export const CanvasCreator: React.FC = () => {

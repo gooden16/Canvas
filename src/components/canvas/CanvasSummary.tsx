@@ -51,65 +51,65 @@ export const CanvasSummary: React.FC<CanvasSummaryProps> = ({
   return (
     <Card className="bg-canvas-navy border-canvas-mediumgray">
       <div className="p-4">
-        <h3 className="text-lg font-playfair text-canvas-cream mb-4">Canvas Summary</h3>
+        <h3 className="text-lg font-playfair text-canvas-cream mb-6">Canvas Summary</h3>
         
-        <div className="space-y-3">
-          <div className="flex items-center justify-between text-canvas-cream">
+        <div className="space-y-4">
+          <div className="grid grid-cols-[auto,1fr] items-center gap-x-3">
             <div className="flex items-center gap-2">
               {canvasState.metrics.length > 0 ? (
                 <Check className="w-4 h-4 text-canvas-gold" />
               ) : (
                 <AlertCircle className="w-4 h-4 text-canvas-burgundy" />
               )}
-              <span>Metrics</span>
+              <span className="text-canvas-cream font-medium min-w-[100px]">Metrics</span>
             </div>
-            <span className="text-sm opacity-80">{getMetricsSummary()}</span>
+            <span className="text-sm text-canvas-cream opacity-80 text-right">{getMetricsSummary()}</span>
           </div>
 
-          <div className="flex items-center justify-between text-canvas-cream">
+          <div className="grid grid-cols-[auto,1fr] items-center gap-x-3">
             <div className="flex items-center gap-2">
               {canvasState.assets.length > 0 ? (
                 <Check className="w-4 h-4 text-canvas-gold" />
               ) : (
                 <AlertCircle className="w-4 h-4 text-canvas-burgundy" />
               )}
-              <span>Assets</span>
+              <span className="text-canvas-cream font-medium min-w-[100px]">Assets</span>
             </div>
-            <span className="text-sm opacity-80">{getAssetsSummary()}</span>
+            <span className="text-sm text-canvas-cream opacity-80 text-right">{getAssetsSummary()}</span>
           </div>
 
-          <div className="flex items-center justify-between text-canvas-cream">
+          <div className="grid grid-cols-[auto,1fr] items-center gap-x-3">
             <div className="flex items-center gap-2">
               <Check className="w-4 h-4 text-canvas-gold" />
-              <span>Liabilities</span>
+              <span className="text-canvas-cream font-medium min-w-[100px]">Liabilities</span>
             </div>
-            <span className="text-sm opacity-80">{getLiabilitiesSummary()}</span>
+            <span className="text-sm text-canvas-cream opacity-80 text-right">{getLiabilitiesSummary()}</span>
           </div>
 
           {needsCollateral && (
-            <div className="flex items-center justify-between text-canvas-cream">
+            <div className="grid grid-cols-[auto,1fr] items-center gap-x-3">
               <div className="flex items-center gap-2">
                 {hasRequiredCollateral ? (
                   <Check className="w-4 h-4 text-canvas-gold" />
                 ) : (
                   <AlertCircle className="w-4 h-4 text-canvas-burgundy" />
                 )}
-                <span>Collateral</span>
+                <span className="text-canvas-cream font-medium min-w-[100px]">Collateral</span>
               </div>
-              <span className="text-sm opacity-80">{getCollateralSummary()}</span>
+              <span className="text-sm text-canvas-cream opacity-80 text-right">{getCollateralSummary()}</span>
             </div>
           )}
 
-          <div className="flex items-center justify-between text-canvas-cream">
+          <div className="grid grid-cols-[auto,1fr] items-center gap-x-3">
             <div className="flex items-center gap-2">
               {canvasState.moneyMovement ? (
                 <Check className="w-4 h-4 text-canvas-gold" />
               ) : (
                 <AlertCircle className="w-4 h-4 text-canvas-burgundy" />
               )}
-              <span>Money Movement</span>
+              <span className="text-canvas-cream font-medium min-w-[100px]">Money Movement</span>
             </div>
-            <span className="text-sm opacity-80">{getMoneyMovementSummary()}</span>
+            <span className="text-sm text-canvas-cream opacity-80 text-right">{getMoneyMovementSummary()}</span>
           </div>
         </div>
       </div>

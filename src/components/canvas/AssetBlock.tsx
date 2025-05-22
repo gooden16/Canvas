@@ -139,7 +139,7 @@ export const AssetBlockConfig: React.FC<AssetBlockConfigProps> = ({
               </div>
               <Toggle 
                 checked={optimizationEnabled}
-                onChange={setOptimizationEnabled}
+                onCheckedChange={setOptimizationEnabled}
               />
             </div>
           </div>
