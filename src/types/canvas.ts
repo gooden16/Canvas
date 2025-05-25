@@ -87,21 +87,28 @@ export interface AssetBlock {
 }
 
 // Liability configuration types
-export type DrawdownTiming = 'immediate' | 'within_90_days' | 'extended_period';
+export type LiabilityType = 'loan' | 'line';
 export type RepaymentFrequency = 'monthly' | 'quarterly' | 'annually';
-export type RepaymentType = 'principal_and_interest' | 'interest_only';
+export type RepaymentType = 'principal_and_interest' | 'interest_only' | 'bullet';
 
 // Liability block definition
 export interface LiabilityBlock {
   id: string;
   type: 'liability';
+  liabilityType: LiabilityType;
   displayName: string;
   requestedAmount: number;
-  drawdownTiming: DrawdownTiming;
   durationYears: number;
   repaymentFrequency: RepaymentFrequency;
   repaymentType: RepaymentType;
   requiresCollateral: boolean;
+  drawdownSchedule?: {
+    initialAmount: number;
+    remainingSchedule: {
+      amount: number;
+      date: string;
+    }[];
+  };
 }
 
 // Collateral configuration types

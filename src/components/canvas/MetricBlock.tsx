@@ -6,13 +6,13 @@ import { MetricBlock, MetricCategory, MetricType, VisualizationType, FrequencyTy
 import { cn, generateId } from '../../lib/utils';
 
 interface MetricBlockConfigProps {
-  metrics: MetricBlock[];
-  onAddMetric: (metric: MetricBlock) => void;
+  metrics?: MetricBlock[];
+  onAdd: (metric: MetricBlock) => void;
 }
 
 export const MetricBlockConfig: React.FC<MetricBlockConfigProps> = ({
-  metrics,
-  onAddMetric,
+  metrics = [], // Provide default empty array
+  onAdd,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<MetricCategory>('business');
   const [formState, setFormState] = useState({
@@ -76,7 +76,7 @@ export const MetricBlockConfig: React.FC<MetricBlockConfigProps> = ({
       priority: 'medium',
     };
     
-    onAddMetric(newMetric);
+    onAdd(newMetric);
     
     // Reset form
     setFormState({
