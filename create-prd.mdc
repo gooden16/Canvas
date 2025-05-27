@@ -1,0 +1,325 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# PRD: Liquidity Canvas Builder for Financial Advisors
+
+## 1. Introduction
+
+This document outlines the requirements for a tool that enables financial advisors to easily build and manage a "Liquidity Canvas" for their clients. The Liquidity Canvas provides a tailored banking experience, offering a holistic view of a client's financial landscape.
+
+## 2. Goals
+
+*   To empower financial advisors with a simple, intuitive, and efficient way to construct and maintain a comprehensive Liquidity Canvas for each client.
+*   To provide clients with a clear, consolidated, and actionable view of their financial situation through the Liquidity Canvas.
+*   To streamline the financial planning and advisory process by centralizing key financial data and logic.
+
+## 3. Target User
+
+Financial Advisors who manage multiple clients and require an efficient way to offer personalized banking and financial overview services.
+
+## 4. User Stories
+
+*   As a financial advisor, I want to quickly add and categorize client assets (e.g., bank accounts, investments, real estate) so I can build a complete financial picture.
+*   As a financial advisor, I want to easily input and track client liabilities (e.g., mortgages, loans, credit card debt) to understand their obligations.
+*   As a financial advisor, I want to define and visualize money movement rules and flows (e.g., income deposits, bill payments, transfers) so that the client's cash flow is clear.
+*   As a financial advisor, I want to implement custom business logic (e.g., savings goals, investment strategies, alerts) to tailor the canvas to individual client needs.
+*   As a financial advisor, I want to manage user access and permissions for clients and their family members/associates, so they can view or interact with the canvas appropriately.
+*   As a financial advisor, I want to define and monitor key financial metrics (e.g., net worth, liquidity ratio, savings rate) to track progress towards financial goals.
+*   As a financial advisor, I want the tool to be intuitive and require minimal training, so I can onboard new clients and manage existing ones efficiently.
+*   As a financial advisor, I want to generate reports and summaries from the Liquidity Canvas to share with my clients.
+
+## 5. Product Requirements
+
+The Liquidity Canvas builder will be comprised of the following core modules, designed for ease of use by the financial advisor:
+
+### 5.1. Assets Management
+
+This section focuses exclusively on cash and cash-equivalent building blocks designed to manage a client's liquidity for their lifestyle needs, distinct from their long-term investment portfolios. The term "building block" is used to represent a conceptual allocation of cash for a specific purpose (operating, reserve, or timed deposit) and may be supported by one or more underlying financial accounts or sources.
+
+*   **[AR1] Cash Building Block Definition & Association:**
+    *   Allow advisors to define and associate funds with three primary types of cash building blocks:
+        *   **Operating Cash Building Blocks:** For day-to-day client expenditures. A client may have multiple such blocks (e.g., household expenses, travel fund).
+        *   **Reserve Cash Building Blocks:** For holding readily available emergency or opportunistic funds, typically with higher sweep yields. A client may have multiple reserve blocks (e.g., general emergency fund, specific future purchase fund).
+        *   **Timed Deposit Building Blocks:** For allocating cash to instruments offering higher yields in exchange for a defined period of reduced liquidity (e.g., Certificates of Deposit, fixed-term deposits). A client may have multiple such blocks with varying terms and amounts.
+    *   Support for associating these building blocks with underlying client bank accounts (checking, savings, money market, CDs) via secure financial data aggregation services (e.g., Plaid, Yodlee) or manual entry/allocation.
+*   **[AR2] Operating Cash Needs Assessment (per Block):**
+    *   Provide tools or guided workflows for the advisor to help determine the optimal average balance for each of a client's Operating Cash Building Block(s) based on their typical spending patterns and income flows related to that block's purpose.
+    *   Allow for setting target balance ranges for each Operating Cash Building Block.
+*   **[AR3] Reserve Cash Threshold Definition (per Block):**
+    *   Enable advisors to define a specific target balance or threshold for each of the client's Reserve Cash Building Block(s).
+    *   This threshold represents the desired level of liquidity to be maintained for that block's specific reserve purpose.
+*   **[AR4] Balance Monitoring & Yield Display (per Block):**
+    *   Display current balances for all defined cash building blocks, aggregating from associated underlying sources if necessary.
+    *   Clearly indicate the effective yield (e.g., APY) for each building block. For Timed Deposit blocks, also display term length, maturity date, and any early withdrawal conditions/penalties.
+    *   Highlight the yield differences between Operating, Reserve, and Timed Deposit blocks.
+*   **[AR5] Distinction from Investment Assets:**
+    *   The user interface must clearly differentiate these cash building blocks from the client's broader investment portfolio, reinforcing that this canvas is for liquidity management, not investment management.
+*   **[AR6] Automated Replenishment of Operating Blocks:**
+    *   Enable configuration of automated transfers from designated Reserve Cash Building Block(s) to Operating Cash Building Block(s) to maintain a target balance in the Operating block(s).
+    *   This logic should aim to keep Operating blocks at their desired funding level while maximizing funds held in higher-yield Reserve blocks.
+*   **[AR7] Timed Deposit Management:**
+    *   Provide functionality to track key dates for Timed Deposit Building Blocks (e.g., maturity dates, interest payment dates).
+    *   Allow for alerts regarding upcoming maturities to facilitate reinvestment or reallocation decisions.
+    *   Display any conditions or penalties associated with early withdrawal from Timed Deposits.
+
+### 5.2. Liabilities Management
+
+This section outlines the requirements for managing client liabilities, specifically lines of credit and term loans. A core principle of the Liquidity Canvas is to enable clients to strategically use these liabilities to meet liquidity needs and fund their lifestyle, potentially avoiding the premature sale of valuable collateral. By drawing on a line of credit secured by such collateral, for example, the client can preserve their investments while servicing the debt obligations using their defined Operating Cash Building Blocks. These liabilities are understood to be secured by collateral (detailed in a separate "Collateral Management" section) and their terms are influenced by factors such as duration, payback structure, and the nature of the collateral.
+
+*   **[LR1] Liability Building Block Definition:**
+    *   Allow advisors to define and track two primary types of liability building blocks:
+        *   **Lines of Credit:** Revolving credit facilities. Key attributes to capture: credit limit, available credit, drawn amount, interest rate (and whether it's fixed/variable), draw period, repayment terms, any associated fees (e.g., unused line fee), and the designated Operating Cash Building Block(s) for servicing payments.
+        *   **Term Loans:** Fixed-term borrowing. Key attributes to capture: original principal, current outstanding balance, interest rate (fixed/variable), loan term/duration, maturity date, payment frequency, payment amount, payback structure, and the designated Operating Cash Building Block(s) for servicing payments.
+    *   For each liability, clearly associate it with the specific collateral used to secure it (linking to the "Collateral Management" section).
+*   **[LR2] Payback Term Specification:**
+    *   For Term Loans, allow specification of the payback structure:
+        *   Principal + Interest (Amortizing)
+        *   Interest-Only (with principal due at maturity or conversion)
+        *   Bullet (single principal repayment at maturity)
+*   **[LR3] Duration and Maturity Tracking:**
+    *   Capture and display the original and remaining duration for term loans, and the term/review date for lines of credit.
+    *   Provide alerts for upcoming maturity dates or term review dates.
+*   **[LR4] Rate and Terms Management:**
+    *   Allow input and tracking of interest rates (including basis, e.g., Prime + X%, SOFR + Y%).
+    *   For variable rates, provide a way to update the rate as it changes.
+    *   Store and display key terms and conditions associated with each liability.
+*   **[LR5] Payment Scheduling and Tracking:**
+    *   For Term Loans, display the upcoming payment schedule (dates and amounts).
+    *   Allow for manual or (where feasible via integration) automated tracking of payments made.
+    *   For Lines of Credit, display minimum payment due, due dates, and track payments.
+*   **[LR6] Available Credit Monitoring (Lines of Credit):**
+    *   Clearly display the total credit limit, current drawn amount, and remaining available credit for all lines of credit.
+*   **[LR7] Impact on Liquidity View:**
+    *   The Liquidity Canvas should clearly show how these liabilities contribute to or draw from the client's overall liquidity position (e.g., available credit from a line of credit is a source of liquidity, while term loan payments are a use of liquidity).
+    *   Visually represent the strategy of using liabilities to protect and grow collateral, while cash flow for debt servicing is managed via Asset Building Blocks.
+*   **[LR8] Proactive Debt Servicing Allocation:**
+    *   When a new liability (line of credit or term loan) is established or an existing one is modified, the system should provide tools or prompts for the advisor to plan and allocate funds within the Asset Building Blocks (Operating and/or Reserve Cash) to cover a defined number of future payments (e.g., X months of interest for a line of credit, or X months of P&I for a term loan).
+    *   The canvas should visually represent this planned coverage, offering assurance to both the client and potentially the lending institution that debt servicing is proactively managed, thereby reducing reliance on the underlying collateral for short-term payment obligations.
+
+### 5.3. Collateral Management
+
+This section details the requirements for managing assets pledged as collateral to secure liabilities within the Liquidity Canvas. The primary goal is to allow clients to leverage various asset types for liquidity while aiming to preserve the collateral itself, with clear monitoring of risk parameters like Loan-to-Value (LTV) ratios.
+
+*   **[CM1] Collateral Building Block Definition:**
+    *   Allow advisors to define and track various types of collateral building blocks, including but not limited to:
+        *   **Public Securities:** Equities, bonds, commodities, etc. (Note: These are for collateral purposes only within the canvas; their primary investment management occurs outside this system).
+        *   **Private Securities:** Shares in private companies, private fund interests.
+        *   **Assignable Cash Flows:** Documented future income streams contractually assigned as collateral.
+        *   **Valuable Illiquid Assets:** Tangible assets like art, collectibles, vehicles, non-primary real estate.
+    *   For each collateral item, capture a detailed description, ownership details, and its current location or custodial arrangement.
+*   **[CM2] Valuation and LTV Determination:**
+    *   Allow input of current market value and the date of valuation for each collateral item. For public securities, integrate with market data feeds for real-time or daily valuation updates where feasible.
+    *   For private/illiquid assets, support manual valuation updates based on appraisals or other documentation.
+    *   Define and assign an appropriate Loan-to-Value (LTV) ratio for each piece of collateral, reflecting its type, liquidity, and risk profile.
+    *   Clearly display the agreed-upon LTV threshold for each collateralized liability.
+*   **[CM3] LTV Monitoring and Alerts:**
+    *   Dynamically calculate and display the current LTV ratio for each liability based on the current value of its pledged collateral and the outstanding liability amount.
+    *   Provide clear visual indicators (e.g., on collateral and liability screens) of the LTV status relative to its threshold.
+    *   Generate alerts to the advisor (and potentially client, if configured) if an LTV ratio approaches or breaches its predefined threshold, signaling a potential need for action (e.g., pledging more collateral, paying down the liability).
+*   **[CM4] Linkage to Liabilities:**
+    *   Each collateral building block must be explicitly linked to the specific Line of Credit or Term Loan(s) it secures.
+    *   A single piece of collateral may secure multiple liabilities (if permissible), and a single liability may be secured by multiple pieces of collateral.
+*   **[CM5] Escrow and Perfection Tracking:**
+    *   Track and display the status of collateral perfection (e.g., "Pending Escrow," "In Escrow," "Perfected").
+    *   Allow for notes or document attachments related to escrow agreements or UCC filings.
+*   **[CM6] Tradability / Liquidation Information:**
+    *   For each collateral type, capture information regarding its tradability or ease of liquidation in a downside scenario (e.g., "High - Public Equity," "Medium - Listed Private Security," "Low - Unique Art Piece").
+    *   This information helps assess the overall risk profile of the collateral pool.
+*   **[CM7] Collateral Release Process:**
+    *   Support for tracking and managing the process of releasing collateral once a liability is fully repaid or restructured.
+
+### 5.4. Money Movement
+
+This section details the requirements for managing the flow of funds into and out of the Liquidity Canvas from/to external entities and accounts. The core principle here is an "intent-based" approach: the client or advisor specifies the details of the desired transaction (who/what/when/where/how much), and the system intelligently selects the most appropriate payment rail (e.g., ACH, RTP, Zelle, wire, check) using "best path routing" logic. This optimizes for factors like speed, cost, and transaction characteristics, abstracting the complexity of payment rail selection from the user.
+
+*   **[MMR1] Capturing External Fund Inflow Intent:**
+    *   Provide an intuitive interface for users to define the parameters of an incoming fund transfer from an external source into a designated cash building block (primarily Operating Cash).
+    *   Required parameters: source (e.g., employer, external account), expected amount, expected date/frequency.
+    *   The system will then guide the user through the necessary steps to facilitate this inflow using the optimal payment rail based on the provided information.
+*   **[MMR2] Capturing External Fund Outflow Intent:**
+    *   Provide an intuitive interface for users to define the parameters of an outgoing fund transfer from a designated cash building block (primarily Operating Cash) to an external recipient.
+    *   Required parameters: recipient (name, account details as needed), amount, desired delivery timeframe (e.g., standard, expedited), payment purpose/memo.
+    *   The system will then execute this outflow using the optimal payment rail.
+*   **[MMR3] Best Path Payment Routing Engine:**
+    *   Develop and maintain a rules-based engine that determines the optimal payment rail for any given external transaction (inflow or outflow) based on a configurable set of criteria. This may include:
+        *   Transaction amount.
+        *   Required speed/settlement time.
+        *   Cost of the transaction rail.
+        *   Recipient/sender capabilities and supported rails.
+        *   Security considerations.
+        *   Regulatory limits or requirements.
+    *   The system should provide transparency (if desired by the advisor) into why a particular rail was chosen.
+*   **[MMR4] Credit Card Integration & Management (if applicable):**
+    *   If identified as a required payment rail for a client:
+        *   Ability to link/manage one or more credit cards used for client spending. The Liquidity Canvas facilitates payment of the credit card bill from an Operating Cash Building Block.
+        *   The actual payment of the credit card bill will also utilize the Best Path Payment Routing Engine.
+        *   Capture client preferences for payment timing (e.g., pay statement balance monthly, pay specific amount weekly, pay daily to minimize float).
+        *   (Optional/Advanced) Track spending categories and rewards if this data is available.
+*   **[MMR5] Transaction Scheduling & History:**
+    *   Allow scheduling of one-time and recurring external fund transfers (based on intent).
+    *   Provide a comprehensive and easily searchable history of all external transactions, including date, amount, counterparty, status, and the payment rail utilized by the system.
+*   **[MMR6] User-Initiated Transfers (Intent-Based):**
+    *   Intuitive interface for clients/advisors (based on permissions) to initiate external fund movements by specifying their intent.
+*   **[MMR7] Security and Controls:**
+    *   Implement robust security measures for all external money movements, including multi-factor authentication for transactions above certain thresholds, and configurable transaction limits.
+    *   Compliance with relevant payment network rules and regulations.
+
+### 5.5. Business Logic Engine
+
+This engine is the intelligent core of the Liquidity Canvas, designed to automate the interactions between the various internal building blocks (Assets, Liabilities, Collateral) based on a configurable set of rules. The goal is to ensure the canvas operates dynamically and seamlessly, reflecting the client's financial strategy with minimal manual intervention once set up.
+
+*   **[BLR1] Customizable Rules Engine:**
+    *   Provide an intuitive interface for financial advisors to define, manage, and prioritize a set of rules that govern the behavior of the Liquidity Canvas.
+    *   **Rule Structure:** Each rule should generally consist of:
+        *   **Stimulus/Trigger:** An event or condition that causes the rule to be evaluated. Examples include:
+            *   Balance in an Operating, Reserve, or Timed Deposit Block crossing a defined threshold (upper or lower).
+            *   An incoming external deposit being credited to a cash block.
+            *   An outgoing external payment being initiated from a cash block.
+            *   A pre-set date/time occurring (e.g., for scheduled internal transfers, bill payment reminders).
+            *   A liability due date approaching.
+            *   An LTV ratio on a collateralized liability approaching or breaching its threshold.
+            *   Maturity of a Timed Deposit Block approaching.
+        *   **Condition(s) (Optional):** Additional criteria that must be met for the action to occur.
+        *   **Action(s):** The automated operations to be performed. Examples include:
+            *   Transferring funds between different cash building blocks (e.g., replenish Operating from Reserve, sweep surplus from Operating to Reserve/Timed Deposit).
+            *   Allocating funds from a cash block to a sub-ledger for an upcoming liability payment.
+            *   Generating an alert or notification to the advisor and/or client.
+            *   (Future) Initiating a draw-down from a Line of Credit if an Operating Block is critically low and no Reserve funds are available (with appropriate approvals).
+    *   **Rule Prioritization:** Allow advisors to set priorities for rules if multiple rules could be triggered by the same event.
+    *   **Logging and Audit:** All rule executions and resulting actions must be logged for audit and review.
+*   **[BLR2] Automated Balance Management:**
+    *   Utilize the rules engine to automate the maintenance of target balances in Operating Cash Building Blocks by transferring funds from/to designated Reserve Cash Building Blocks, as defined in `[AR6]`.
+    *   Support rules for tiered liquidity (e.g., maintain X in Operating, then Y in Reserve, then Z in short-term Timed Deposits, with overflows going to a higher-yield Reserve).
+*   **[BLR3] Automated Debt Servicing Support:**
+    *   Enable rules to automatically allocate or transfer funds from specified Operating or Reserve Cash Building Blocks to cover upcoming payments for linked Liabilities, supporting `[LR8]`.
+    *   Generate alerts if anticipated funds for debt servicing are insufficient.
+*   **[BLR4] Financial Goal Contribution (Future Enhancement):**
+    *   (Future) Allow rules that automate contributions from cash building blocks towards defined financial goals (e.g., "transfer $X monthly from Operating surplus to a 'Vacation Fund' Timed Deposit Block").
+
+### 5.6. User Management & Permissions
+
+This section outlines the system for managing users and their specific rights within each Liquidity Canvas. The model allows for granular control over what each user can view and what transactions they can perform, tailored to their role and relationship with the client and their canvas.
+
+*   **[UMR1] User Identification & Profiles:**
+    *   Securely manage profiles for all individuals who interact with the Liquidity Canvas system (e.g., Financial Advisors, Primary Clients, and other associated users).
+    *   Each user profile will include necessary identification details and authentication credentials.
+*   **[UMR2] Granular Canvas Permissions Assignment:**
+    *   For each Liquidity Canvas, the Financial Advisor (or a designated administrator) can add users and assign specific permissions from the following categories:
+    *   **Viewing Rights:** Define what parts of the canvas a user can see:
+        *   Full Canvas View: Access to all building blocks, data, and reports within that specific canvas.
+        *   Partial Canvas View: Restricted access to view only designated building blocks (e.g., a specific Operating Cash block, summary metrics only) or specific reports.
+    *   **Transaction Rights:** Define what transactions a user can initiate or authorize on behalf of the canvas:
+        *   Overall Scope: Whether the user can transact on all relevant blocks or only specific, designated blocks within the canvas.
+        *   Directional Control:
+            *   Inflows Only: User can only initiate or approve transactions that bring money into the canvas.
+            *   Outflows Only: User can only initiate or approve transactions that send money out of the canvas.
+            *   Both Inflows & Outflows.
+        *   Transaction Limits:
+            *   Monetary Limit: Maximum allowable amount per transaction, per day, or per other defined period.
+            *   Frequency Limit: Maximum number of transactions allowed per day or other defined period.
+        *   Approval Workflows (Optional): For certain users or transaction types, require secondary approval from another designated user (e.g., the Primary Client or Advisor).
+*   **[UMR3] Pre-defined Role Templates (Optional):**
+    *   While permissions are granular, the system may offer optional pre-defined permission templates for common user types (e.g., "Spouse - View Only," "Accountant - Full View, No Transactions," "Child - Limited Operating Block View & Transact") to speed up setup, which can then be further customized.
+*   **[UMR4] Secure User Onboarding & Management:**
+    *   Simple and secure process for Financial Advisors to invite clients and other users to access a Liquidity Canvas with their assigned permissions.
+    *   Advisors should be able to easily review and modify user permissions for each canvas they manage.
+    *   Users should have a secure way to manage their own credentials (e.g., password resets).
+
+### 5.7. Key Metrics & Reporting
+
+This section outlines the requirements for displaying key metrics and generating reports from the Liquidity Canvas. The core principle is to provide both advisors and clients with a clear, customizable, and data-driven view of the canvas's status, performance, and alignment with the client's financial goals. Metrics should be easily calculable from the underlying data within the various building blocks.
+
+*   **[KMR1] Customizable Client Dashboard:**
+    *   Provide a configurable dashboard where clients and advisors can select and arrange the key metrics they wish to monitor for the Liquidity Canvas.
+    *   The dashboard should offer a high-level overview of the canvas at a glance.
+*   **[KMR2] Metric Definition & Calculation Engine:**
+    *   Support a library of pre-defined standard metrics, including:
+        *   Current balances for each Operating, Reserve, and Timed Deposit Cash Building Block.
+        *   Total available credit from Lines of Credit.
+        *   Outstanding balances on Term Loans.
+        *   Total inflows and outflows (for the entire canvas or specific blocks) over selectable periods (e.g., last 7 days, month-to-date, last 90 days).
+        *   Current LTV ratios for collateralized liabilities.
+    *   Enable advisors (and potentially clients, with controls) to define custom/tailored metrics. This involves:
+        *   Selecting data fields from across the canvas (e.g., balances from specific cash blocks, payment amounts from liabilities, income transaction data, expense transaction data).
+        *   Applying basic arithmetic operations (addition, subtraction, multiplication, division) and logical functions to these fields.
+        *   Example of a tailored metric: "Net Operating Surplus" = (Sum of Inflows to Operating Blocks) - (Sum of Outflows from Operating Blocks, including scheduled Liability Payments).
+    *   All metric definitions should be savable and reusable.
+*   **[KMR3] Data Visualization:**
+    *   Present metrics using clear and intuitive visualizations (e.g., charts, graphs, gauges, summary tables) to facilitate quick understanding of trends and status.
+    *   Allow users to drill down from summary metrics to underlying transaction details where appropriate.
+*   **[KMR4] Report Generation:**
+    *   Ability to generate reports (e.g., PDF, CSV) based on selected metrics and time periods.
+    *   Support for standard report templates (e.g., "Monthly Liquidity Summary," "Liability Overview," "Cash Flow Statement").
+    *   (Optional) Allow advisors to create and save custom report templates.
+*   **[KMR5] Alerts Based on Metrics:**
+    *   Integrate with the Business Logic Engine (`[BLR1]`) to allow alerts to be triggered if a key metric (standard or custom) crosses a user-defined threshold.
+
+## 6. User Experience (UX) and UI Design Principles
+
+The design of the Liquidity Canvas interface is critical to its success. It must be intuitive for financial advisors to build and manage canvases, and clear for clients to understand their liquidity picture. The following principles should guide the UI/UX design:
+
+*   **[UXP1] Canvas Metaphor Embodiment:**
+    *   The UI should strongly reflect the "Liquidity Canvas" concept, allowing advisors to visually construct a client's liquidity structure using distinct "building blocks" for Assets, Liabilities, and Collateral.
+    *   Consider a main workspace where these blocks can be added, arranged, and visually linked to represent their relationships.
+*   **[UXP2] Guided yet Flexible Construction:**
+    *   Provide an intuitive process for adding building blocks (e.g., from a palette or menu).
+    *   When configuring blocks or establishing relationships (e.g., linking collateral to a liability, designating a cash block for debt servicing), the system should guide the advisor, highlighting necessary inputs and valid connections.
+    *   Offer flexibility in layout and arrangement where possible, but ensure clarity of interdependencies is maintained.
+*   **[UXP3] Progressive Disclosure & Contextual Information:**
+    *   Each building block should display key summary information directly on the canvas.
+    *   Detailed parameters, settings, and transaction history for a block should be accessible via a contextual inspector panel or a clean drill-down view, avoiding clutter on the main canvas.
+*   **[UXP4] Clear Visualization of Interdependencies & Flows:**
+    *   Use clear visual cues (e.g., lines, connectors, icons, color-coding) to represent:
+        *   Collateral securing specific liabilities.
+        *   Cash building blocks designated for servicing liabilities.
+        *   Automated fund flows defined by the Business Logic Engine (e.g., Reserve to Operating replenishment).
+        *   LTV ratios and their proximity to thresholds.
+*   **[UXP5] Role-Specific Interfaces:**
+    *   **Advisor View ("Build Mode"):** Full access to tools for adding, configuring, and linking building blocks, defining business logic rules, managing users, and viewing detailed analytics.
+    *   **Client View ("Overview Mode"):** A simplified, often read-only or transaction-limited view focusing on key metrics, overall canvas status, and easy-to-understand visualizations. Access to specific transaction capabilities as defined in User Management.
+*   **[UXP6] Actionable Insights & Alerts:**
+    *   The UI must clearly highlight situations requiring attention (e.g., Operating Cash below target, LTV approaching threshold, upcoming Timed Deposit maturity) through visual cues on the dashboard/canvas and through notifications/alerts.
+    *   It should be easy for the advisor (or client, if permissioned) to understand the issue and navigate to the relevant part of the canvas to take action.
+*   **[UXP7] Efficiency for Power Users (Advisors):**
+    *   Design for efficient management of multiple client canvases.
+    *   Consider features such as canvas templates, duplication of building blocks or rule sets (with modification), and streamlined navigation.
+*   **[UXP8] Modern, Trustworthy, and Accessible Design:**
+    *   The visual design should be modern, professional, and instill confidence, befitting a financial application handling sensitive information.
+    *   Ensure the UI is accessible, adhering to WCAG or similar standards where applicable.
+*   **[UXP9] Skeuomorphic Influences (Thoughtful Application):**
+    *   Where it enhances understanding and intuitiveness, thoughtfully incorporate skeuomorphic design elements that relate to the canvas, building blocks, or financial concepts, without sacrificing clarity or modernity.
+
+## 7. Non-Functional Requirements
+
+*   **[NFR1] Ease of Use:** The system must be highly intuitive for financial advisors, requiring minimal training. User interface should be clean, modern, and uncluttered.
+*   **[NFR2] Security:** Bank-grade security for all client data, including encryption at rest and in transit, multi-factor authentication. Compliance with relevant financial regulations (e.g., GDPR, CCPA, etc., depending on jurisdiction).
+*   **[NFR3] Performance:** The system must be responsive and fast, even with large amounts of client data.
+*   **[NFR4] Reliability:** High availability and data integrity are paramount.
+*   **[NFR5] Scalability:** The platform should be able to scale to support a growing number of advisors and their clients.
+*   **[NFR6] Integrations:** Seamless integration with core banking systems, custodians, and financial data aggregators.
+*   **[NFR7] Mobile Accessibility:** Client view should be accessible and well-rendered on mobile devices. Advisor tools may be desktop-focused initially but mobile accessibility is a plus.
+
+## 8. Success Metrics (for the Product)
+
+*   Advisor adoption rate.
+*   Average time taken by an advisor to build a client's Liquidity Canvas.
+*   Client engagement with the Liquidity Canvas (e.g., login frequency, time spent).
+*   Reduction in time spent by advisors on manual data gathering and reporting.
+*   User satisfaction scores (from both advisors and clients) via surveys.
+*   Number of custom business logic rules created.
+
+## 9. Future Considerations
+
+*   AI-powered financial insights and recommendations.
+*   Direct execution of trades or transactions from within the platform (with appropriate controls).
+*   Advanced collaborative tools for advisors and clients.
+*   Integration with tax preparation software.
+*   Gamification elements for client engagement in achieving financial goals.
+
+## 10. Open Questions
+
+*   What level of customization is needed for the "Business Logic" component at MVP?
+*   Which specific data aggregators should be prioritized for integration?
+*   What are the primary compliance and regulatory hurdles in the target markets?
