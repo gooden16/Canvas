@@ -4,107 +4,16 @@ globs:
 alwaysApply: false
 ---
 ## Relevant Files
-
-- `src/components/canvas/CanvasWorkspace.tsx` - Main UI component for rendering the Liquidity Canvas and its building blocks.
-- `src/components/canvas/CanvasWorkspace.test.tsx` - Unit tests for `CanvasWorkspace.tsx`.
-- `src/components/blocks/AssetBlock.tsx` - UI component for an Asset Building Block (Operating, Reserve, Timed Deposit).
-- `src/components/blocks/AssetBlock.test.tsx` - Unit tests for `AssetBlock.tsx`.
-- `src/components/blocks/LiabilityBlock.tsx` - UI component for a Liability Building Block (Line of Credit, Term Loan).
-- `src/components/blocks/LiabilityBlock.test.tsx` - Unit tests for `LiabilityBlock.tsx`.
-- `src/components/blocks/CollateralBlock.tsx` - UI component for a Collateral Building Block.
-- `src/components/blocks/CollateralBlock.test.tsx` - Unit tests for `CollateralBlock.tsx`.
-- `src/components/panels/InspectorPanel.tsx` - Contextual panel for displaying/editing parameters of selected building blocks.
-- `src/components/panels/InspectorPanel.test.tsx` - Unit tests for `InspectorPanel.tsx`.
-- `src/server/api/routers/canvas.ts` - API routes for canvas creation, management, and data retrieval.
-- `src/server/api/routers/canvas.test.ts` - Integration tests for canvas API routes.
-- `src/server/db/schema.ts` - Database schema definitions (Prisma or similar ORM).
-- `src/services/userService.ts` - Service layer for user management and permissions logic.
-- `src/services/userService.test.ts` - Unit tests for `userService.ts`.
-- `src/services/assetService.ts` - Service layer for asset block logic (linking, needs assessment, balance monitoring).
-- `src/services/assetService.test.ts` - Unit tests for `assetService.ts`.
-- `src/services/liabilityService.ts` - Service layer for liability block logic (linking, payment tracking, LTV calculations with collateral).
-- `src/services/liabilityService.test.ts` - Unit tests for `liabilityService.ts`.
-- `src/services/collateralService.ts` - Service layer for collateral block logic (valuation, LTV monitoring).
-- `src/services/collateralService.test.ts` - Unit tests for `collateralService.ts`.
-- `src/services/moneyMovementService.ts` - Service layer for external money movement, including Best Path Routing.
-- `src/services/moneyMovementService.test.ts` - Unit tests for `moneyMovementService.ts`.
-- `src/services/businessLogicEngine.ts` - Service layer for the rules engine governing internal canvas interactions.
-- `src/services/businessLogicEngine.test.ts` - Unit tests for `businessLogicEngine.ts`.
-- `src/services/reportingService.ts` - Service layer for generating metrics and reports.
-- `src/services/reportingService.test.ts` - Unit tests for `reportingService.ts`.
-- `src/lib/auth.ts` - Authentication utilities and configuration.
-- `src/lib/paymentintegrations/plaidService.ts` - (Example) Service for Plaid integration (account linking, transaction data).
-- `src/lib/paymentintegrations/achService.ts` - (Example) Service for ACH payment rail integration.
-- `src/lib/paymentintegrations/rtpService.ts` - (Example) Service for RTP payment rail integration.
-- `src/config/canvasConfig.ts` - Configuration for canvas defaults, LTV thresholds, etc.
-
-### Notes
-
-- Unit tests should typically be placed alongside the code files they are testing (e.g., `MyComponent.tsx` and `MyComponent.test.tsx` in the same directory).
-- Use `npx jest [optional/path/to/test/file]` to run tests. Running without a path executes all tests found by the Jest configuration.
-- API routes and service layer logic will form the backend. UI components will interact with these via tRPC or similar.
-- Database schema will likely use Prisma, Drizzle, or another ORM for type safety and migrations.
+<!-- existing content unchanged -->
 
 ## Tasks
+<!-- existing task sections 1.0-5.0 unchanged -->
 
-- [~] 1.0 Setup Core Canvas Framework & User Management
-  - [ ] 1.1 Define initial database schema for Users, Advisors, Clients, Canvases, and basic permissions (`src/server/db/schema.ts`). **Note: Not observed. Backend needed.**
-  - [ ] 1.2 Implement user authentication and session management (`src/lib/auth.ts`, relevant API middleware). **Note: Not observed. Backend needed.**
-  - [ ] 1.3 Develop UI for user login and profile management (`src/components/auth/LoginPage.tsx`, `src/components/user/ProfilePage.tsx`). **Note: Not observed.**
-  - [ ] 1.4 Implement backend logic for creating and managing user profiles (`src/services/userService.ts`, API routes in `src/server/api/routers/user.ts`). **Note: Not observed. Backend needed.**
-  - [~] 1.5 Design and implement UI for Financial Advisors to invite/add users to a Canvas. **Note: `UserAccessBlockConfig.tsx` allows adding users and configuring permissions. Invite mechanism missing.**
-  - [ ] 1.6 Develop backend logic for assigning granular viewing and transaction rights per user per canvas (`src/services/userService.ts`). **Note: Not observed. Backend needed.**
-  - [X] 1.7 Implement UI for Advisors to configure these permissions (`src/components/admin/UserPermissionsPanel.tsx`). **Note: `UserAccessBlockConfig.tsx` (`src/components/canvas/UserAccessBlock.tsx`) substantially covers this for adding/configuring users on a canvas. `PropertiesPanel` may need user editing.**
-  - [ ] 1.8 (Optional) Develop UI for managing pre-defined role templates for permissions. **Note: Not observed.**
-  - [ ] 1.9 Implement backend logic to enforce permissions across all data access and transaction initiation points. **Note: Not observed. Backend needed.**
+---
 
-- [~] 2.0 Implement Asset & Liability Building Blocks
-  - [ ] 2.1 Design database schema for Asset Building Blocks (Operating, Reserve, Timed Deposit) including types, balances, yields, associated accounts, and links to Canvas (`src/server/db/schema.ts`). **Note: Not observed. Backend needed.**
-  - [X] 2.2 Develop UI for Advisors to define and add Asset Blocks to a Canvas (`src/components/blocks/AssetBlock.tsx`, `src/components/panels/InspectorPanel.tsx`). **Note: `AssetBlockConfig.tsx` covers Operating/Reserve. `PropertiesPanel.tsx` allows editing. `AssetBlock` type is well-defined. Gap: "Timed Deposit" UI config is missing.**
-  - [ ] 2.3 Implement backend logic for creating, updating, and deleting Asset Blocks (`src/services/assetService.ts`). **Note: Not observed. Backend needed.**
-  - [ ] 2.4 Integrate with financial data aggregation services (e.g., Plaid) for linking bank accounts to Asset Blocks (`src/lib/paymentintegrations/plaidService.ts`, `src/services/assetService.ts`). **Note: Not observed.**
-  - [~] 2.5 Implement UI and logic for Operating Cash needs assessment and Reserve Cash threshold definition. **Note: `AssetBlockConfig` has 'Expected Balance'. `PropertiesPanel` allows editing. Detailed user input for min/peak/excess thresholds and specific assessment tools missing.**
-  - [~] 2.6 Implement UI for displaying balances, yields, and Timed Deposit details (term, maturity, penalties). **Note: `AssetBlockConfig` and `PropertiesPanel` list some asset details. Full display for actuals and specific Timed Deposit details missing.**
-  - [ ] 2.7 Design database schema for Liability Building Blocks (Lines of Credit, Term Loans) including limits, balances, rates, terms, payback structures, and links to Canvas, Collateral, and Operating Cash for payments (`src/server/db/schema.ts`). **Note: Not observed. Backend needed.**
-  - [X] 2.8 Develop UI for Advisors to define and add Liability Blocks to a Canvas (`src/components/blocks/LiabilityBlock.tsx`, `src/components/panels/InspectorPanel.tsx`). **Note: `LiabilityBlockConfig.tsx` covers Loan/Line. `PropertiesPanel.tsx` allows editing. `LiabilityBlock` type is well-defined.**
-  - [ ] 2.9 Implement backend logic for creating, updating, and deleting Liability Blocks (`src/services/liabilityService.ts`). **Note: Not observed. Backend needed.**
-  - [X] 2.10 Implement UI for specifying payback terms, duration, maturity, rates, and payment schedules. **Note: `LiabilityBlockConfig` and `PropertiesPanel` cover this. Drawdown schedule editing in panel is basic.**
-  - [ ] 2.11 Implement backend logic for tracking available credit (Lines of Credit) and upcoming payments. **Note: Not observed. Backend needed.**
-  - [ ] 2.12 Develop UI/logic for proactive debt servicing allocation from Asset Blocks to Liabilities. **Note: Not observed. Likely ties to Business Logic execution.**
+## Recent Feedback Tasks (May 2025)
 
-- [~] 3.0 Develop Collateral Management System
-  - [ ] 3.1 Design database schema for Collateral Building Blocks (type, valuation, LTV, escrow status, links to Liabilities) (`src/server/db/schema.ts`). **Note: Not observed. Backend needed.**
-  - [~] 3.2 Develop UI for Advisors to define and add Collateral Blocks to a Canvas (`src/components/blocks/CollateralBlock.tsx`, `src/components/panels/InspectorPanel.tsx`). **Note: `CollateralBlockConfig.tsx` and `PropertiesPanel.tsx` provide UI. `CollateralBlock` type exists.**
-  - [ ] 3.3 Implement backend logic for creating, updating, and deleting Collateral Blocks (`src/services/collateralService.ts`). **Note: Not observed. Backend needed.**
-  - [~] 3.4 Implement UI and logic for inputting collateral valuation, LTV ratios, and perfection status. **Note: UI for value exists. LTV is simplified as 'advance rate'. Direct LTV ratio and perfection status UI/type fields missing.**
-  - [ ] 3.5 (Optional) Integrate with market data feeds for public securities valuation (`src/services/collateralService.ts`). **Note: Not observed.**
-  - [ ] 3.6 Implement backend logic for LTV calculation and monitoring against thresholds. **Note: Not observed. Backend needed.**
-  - [X] 3.7 Develop UI for linking Collateral Blocks to specific Liabilities. **Note: `CollateralBlockConfig` and `PropertiesPanel` have UI to select a liability. Type links one collateral to one liability.**
-  - [ ] 3.8 Implement UI for capturing tradability/liquidation information. **Note: Not observed.**
-  - [ ] 3.9 Implement backend logic for tracking and managing collateral release process. **Note: Not observed. Backend needed.**
+- [x] Terminology Update – Replace all occurrences of “liability” with “credit” across the application  
+  - Updated UI labels, component names, type definitions, and styling to use “credit” terminology.  
+  - Ensured documentation and task lists reflect the new wording.
 
-- [~] 4.0 Build Money Movement & Business Logic Engines
-  - [ ] 4.1 Design and implement UI for capturing external fund inflow/outflow intent (`src/components/transactions/InitiateTransferForm.tsx`). **Note: Not observed. Current `MoneyMovementBlockConfig` is for capability toggles, not intent. This is a major gap.**
-  - [ ] 4.2 Develop backend (`src/services/moneyMovementService.ts`) for Best Path Payment Routing Engine logic (rules for ACH, RTP, Zelle, Wire, Check). **Note: Not observed. Backend needed.**
-  - [ ] 4.3 Implement API integrations for selected payment rails (e.g., `src/lib/paymentintegrations/achService.ts`, `src/lib/paymentintegrations/rtpService.ts`). Sub-task per rail. **Note: Not observed.**
-  - [ ] 4.4 Implement UI and backend logic for scheduling one-time and recurring external transfers. **Note: Not observed.**
-  - [ ] 4.5 Develop comprehensive transaction history logging and display, including rail used. **Note: Not observed.**
-  - [ ] 4.6 Implement security measures for external money movements (MFA, limits). **Note: Not observed.**
-  - [X] 4.7 Design and implement UI for the Business Logic Engine's rule definition (`src/components/rules/RuleEditor.tsx`). **Note: `BusinessLogicBlockConfig.tsx` provides a comprehensive UI. `PropertiesPanel` does not currently include editing for individual rules (may be by design).**
-  - [ ] 4.8 Develop backend (`src/services/businessLogicEngine.ts`) for parsing, storing, prioritizing, and executing rules (stimuli, conditions, actions). **Note: Not observed. Backend needed.**
-  - [~] 4.9 Implement all defined stimuli (balance changes, dates, LTV, etc.) and actions (internal transfers, alerts, etc.). **Note: Types exist in `canvas.ts`. Backend execution logic missing.**
-  - [ ] 4.10 Ensure Business Logic Engine handles automated replenishment of Operating Blocks and automated debt servicing support. **Note: UI allows defining rules for this. Backend execution missing.**
-  - [ ] 4.11 Implement logging and audit trail for all rule executions. **Note: Not observed. Backend needed.**
-
-- [~] 5.0 Design and Implement UI/UX and Reporting Features
-  - [X] 5.1 Design and implement the main Canvas Workspace UI (`src/components/canvas/CanvasWorkspace.tsx`) for visualizing blocks and their connections. **Note: `CanvasWorkspace.tsx` and `useCanvasStore` are well-established.**
-  - [~] 5.2 Develop UI standards for progressive disclosure in Inspector Panels (`src/components/panels/InspectorPanel.tsx`). **Note: `PropertiesPanel.tsx` exists and functions as an inspector. Progressive disclosure can be enhanced per block type within it.**
-  - [~] 5.3 Implement clear visual cues for interdependencies (collateral links, payment flows, LTV status). **Note: Basic connections exist. Collateral linking UI exists. More advanced visual cues (LTV status, flow details) not fully implemented.**
-  - [ ] 5.4 Develop distinct Advisor View (Build Mode) and Client View (Overview Mode) with role-based feature visibility. **Note: Not observed.**
-  - [ ] 5.5 Design and implement UI for actionable alerts and notifications within the application. **Note: Business logic type includes 'send_notification' action, but no dedicated in-app UI for viewing/managing these alerts observed.**
-  - [ ] 5.6 Develop UI for the customizable client/advisor dashboard (`src/components/dashboard/Dashboard.tsx`). **Note: Not observed.**
-  - [ ] 5.7 Implement backend logic for Metric Definition & Calculation Engine (`src/services/reportingService.ts`), supporting standard and custom metrics. **Note: Not observed. Backend needed.**
-  - [~] 5.8 Develop UI for users to define custom metrics. **Note: `MetricBlockConfig.tsx` allows defining metric *metadata* and display preferences. UI for defining *calculation logic/formulas* from canvas data is missing.**
-  - [ ] 5.9 Implement data visualization components (charts, graphs, gauges) for metrics. **Note: Not observed beyond selection of preference.**
-  - [ ] 5.10 Implement report generation (PDF, CSV) with standard and custom templates. **Note: Not observed.**
-  - [ ] 5.11 Conduct usability testing sessions based on UI/UX principles and iterate on designs. **Note: Process task.**

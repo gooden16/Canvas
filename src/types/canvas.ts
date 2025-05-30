@@ -4,8 +4,8 @@
 export type BuildingBlockType = 
   | 'metric'     // Financial metrics and KPIs
   | 'asset'      // Asset accounts (operating, reserve)
-  | 'liability'  // Lending and credit facilities
-  | 'collateral' // Assets securing liabilities
+  | 'credit'     // Credit facilities and financing
+  | 'collateral' // Assets securing credits
   | 'money-movement' // Payment and transaction configuration
   | 'business-logic' // Automated rules and workflows
   | 'user';      // User access and permissions
@@ -86,16 +86,16 @@ export interface AssetBlock {
   };
 }
 
-// Liability configuration types
-export type LiabilityType = 'loan' | 'line';
+// Credit configuration types
+export type CreditType = 'loan' | 'line';
 export type RepaymentFrequency = 'monthly' | 'quarterly' | 'annually';
 export type RepaymentType = 'principal_and_interest' | 'interest_only' | 'bullet';
 
-// Liability block definition
-export interface LiabilityBlock {
+// Credit block definition
+export interface CreditBlock {
   id: string;
-  type: 'liability';
-  liabilityType: LiabilityType;
+  type: 'credit';
+  creditType: CreditType;
   displayName: string;
   requestedAmount: number;
   durationYears: number;
@@ -112,7 +112,15 @@ export interface LiabilityBlock {
 }
 
 // Collateral configuration types
-export type CollateralAssetType = 'real_estate' | 'public_securities' | 'private_securities' | 'other_assets';
+export type CollateralAssetType = 
+  | 'real_estate' 
+  | 'public_securities' 
+  | 'private_securities' 
+  | 'other_assets'
+  | 'receivable_cash_flow';
+
+export type ValuationSourceType = 'appraisal' | 'market_data' | 'estimate' | 'contract_value' | 'other';
+export type OwnershipType = 'individual' | 'joint' | 'entity' | 'trust';
 
 // Collateral block definition
 export interface CollateralBlock {
@@ -124,7 +132,24 @@ export interface CollateralBlock {
     type: 'broker_dealer' | 'physical_address';
     details: string;
   };
-  liabilityId: string;  // Links collateral to specific liability
+  creditId: string;  // Links collateral to specific credit
+  
+  // Enhanced valuation details
+  valuationDetails?: {
+    valuationDate: string;
+    valuationSource: ValuationSourceType;
+    lastUpdated: string;
+  };
+  
+  // Ownership information
+  ownershipDetails?: {
+    ownerName: string;
+    ownershipType: OwnershipType;
+    ownershipPercentage: number;
+  };
+  
+  // Source and additional information
+  sourceInformation?: string;
 }
 
 // Money movement configuration types
@@ -196,7 +221,7 @@ export type CanvasState = {
   steps: CanvasStep[];
   metrics: MetricBlock[];
   assets: AssetBlock[];
-  liabilities: LiabilityBlock[];
+  credits: CreditBlock[];
   collateral: CollateralBlock[];
   moneyMovement?: MoneyMovementBlock;
   businessLogic?: BusinessLogicBlock;

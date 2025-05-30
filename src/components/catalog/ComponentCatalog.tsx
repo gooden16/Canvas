@@ -5,7 +5,7 @@ import { BuildingBlockType } from '../../types/canvas';
 import { Landmark, CreditCard, Package, ArrowLeftRight, Zap, Users, Target } from 'lucide-react';
 import { MetricBlockConfig } from '../canvas/MetricBlock';
 import { AssetBlockConfig } from '../canvas/AssetBlock';
-import { LiabilityBlockConfig } from '../canvas/LiabilityBlock';
+import { CreditBlockConfig } from '../canvas/CreditBlock';
 import { MoneyMovementBlockConfig } from '../canvas/MoneyMovementBlock';
 import { BusinessLogicBlockConfig } from '../canvas/BusinessLogicBlock';
 import { UserAccessBlockConfig } from '../canvas/UserAccessBlock';
@@ -32,12 +32,12 @@ const blockTypes = [
     config: AssetBlockConfig,
   },
   {
-    id: 'liability',
+    id: 'credit',
     icon: CreditCard,
-    label: 'Liabilities',
+    label: 'Credit',
     description: 'Set up credit facilities',
     color: 'border-canvas-burgundy',
-    config: LiabilityBlockConfig,
+    config: CreditBlockConfig,
   },
   {
     id: 'money-movement',
@@ -99,11 +99,11 @@ export const ComponentCatalog: React.FC<ComponentCatalogProps> = ({ onAddCompone
             }}
           />
         );
-      case 'liability':
+      case 'credit':
         return (
           <ConfigComponent
-            liabilities={[]}
-            onAddLiability={(data: any) => {
+            credits={[]}
+            onAddCredit={(data: any) => {
               onAddComponent(selectedType, data);
               handleClose();
             }}
@@ -112,7 +112,7 @@ export const ComponentCatalog: React.FC<ComponentCatalogProps> = ({ onAddCompone
       case 'business-logic':
         return (
           <ConfigComponent
-            canvasState={{ assets: [], liabilities: [], businessLogic: null }}
+            canvasState={{ assets: [], credits: [], businessLogic: null }}
             onUpdateBusinessLogic={(data: any) => {
               onAddComponent(selectedType, data);
               handleClose();
@@ -123,7 +123,7 @@ export const ComponentCatalog: React.FC<ComponentCatalogProps> = ({ onAddCompone
         return (
           <ConfigComponent
             users={[]}
-            canvasState={{ assets: [], liabilities: [], users: [] }}
+            canvasState={{ assets: [], credits: [], users: [] }}
             onAddUser={(data: any) => {
               onAddComponent(selectedType, data);
               handleClose();
